@@ -1,11 +1,18 @@
 import { ScrollTrigger, SplitText } from "gsap/all"
+import Navbar from "./components/Navbar"
 import gsap from "gsap"
+import Herosection from "./components/HeroSection"
+
 gsap.registerPlugin(ScrollTrigger, SplitText)
 
 function App()
 {
   return(
-    <p>APP</p>
+    <>
+    <Navbar />
+    <Herosection />
+    <div className="h-dvh bg-black" />
+    </>
   )
 }
 
