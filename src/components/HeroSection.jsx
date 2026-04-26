@@ -1,10 +1,15 @@
 import gsap from "gsap"
 import { useGSAP } from "@gsap/react"
 import { SplitText } from "gsap/all"
+import { useRef } from "react"
 
 gsap.registerPlugin(SplitText)
 
 function Herosection() {
+    const videoRef = useRef()
+    const startvalue = "center 60%"
+    const endvalue = "bottom top"
+
     useGSAP(() => {
         const heroText = new SplitText(".title", { type: "chars, words" })
         const subtitle = new SplitText(".subtitle", { type: "lines" })
@@ -24,7 +29,7 @@ function Herosection() {
             stagger: 0.06,
             duration: 1,
             delay: 1,
-            opacity : 0,
+            opacity: 0,
             ease: "expo.out"
         })
 
@@ -46,6 +51,24 @@ function Herosection() {
         t1.to(".right-leaf", {
             y: 300
         }, 0)
+
+        const t2 = gsap.timeline(
+            {
+                scrollTrigger: {
+                    target: "video",
+                    scrub: true,
+                    start: startvalue,
+                    end: endvalue,
+                    pin: true
+                }
+            }
+        )
+
+        videoRef.current.onloadedmetadata = () => {
+            t2.to(videoRef.current, {
+                currentTime: videoRef.current.duration
+            })
+        }
     })
     return (
         <>
@@ -67,6 +90,16 @@ function Herosection() {
                     </div>
                 </div>
             </section>
+
+            <div className="video absolute inset-0">
+                <video
+                    ref={videoRef}
+                    src="../../public/videos/output.mp4"
+                    muted
+                    playsInline
+                    preload="auto"
+                />
+            </div>
         </>
     )
 }
